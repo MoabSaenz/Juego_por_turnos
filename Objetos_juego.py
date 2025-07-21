@@ -32,8 +32,8 @@ class Personaje:
         print(self.Nombre, "Ha muerto")
         
     def Daño(self, enemigo):#Agregamos la variable enemigo, donde encapsularemos al otro personaje contra quien nos enfrentamos
-        return self.Fuerza - enemigo.Resistencia 
-    
+        return max(self.Fuerza - enemigo.Resistencia, 0)
+
 
     def Atacar(self, Enemigo):#Este metodo es para calcular el dmg que le haremos a nuestro rival usando la formula del metodo Daño
         Daño = self.Daño(Enemigo)
@@ -51,18 +51,25 @@ class Guerrero(Personaje):
         super().__init__(Nombre)
         self.Espada = 0
         self.Nombres_espadas = { #Creamos un diccionario para asignarles los nombres a cada numero, y luego poder imprimirlos
-            8:"(Lanza de shojin)",
-            10:"(Espada del rey arruinado)"
+            8:"Lanza de shojin",
+            10:"Espada del rey arruinado"
         } 
         
     def Elegir_arma(self):
-        opcion = input("Elige un arma: (1)Espada del rey arruinado (2)Lanza de shojin\n").strip() #Le damos la opcion al usuario 
-        if opcion == "1":
-            self.Espada = 10
-        elif opcion == "2":
-            self.Espada = 8
-        else:
-            print("Elegiste un numero incorrecto, elige otra vez")
+        opciones = {
+            "1" : (10, "Espada del rey arruinado"),
+            "2" : (8, "Lanza de shojin")
+            }
+        
+        while True:
+            opcion = input("Elige un arma: (1)Espada del rey arruinado (2)Lanza de shojin\n").strip() #Le damos la opcion al usuario
+            if opcion in opciones:
+                self.Espada, nombre = opciones[opcion]
+                print(f"Usted escogió: {nombre} ")
+                break
+            else:
+                print("Elegiste un numero incorrecto, elige otra vez")
+                
         
     def Atributos(self):
         stats = super().Atributos() #Toma del metodo atributos de la clase super(Personaje, lo hacemos una variable para que podamos
@@ -89,14 +96,21 @@ class Mago(Personaje):
         } 
         
     def Elegir_arma(self):
-        opcion = input("Elige un arma: (1)Báculo del árcangel (2)Báculo del vacío\n").strip() #Le damos la opcion al usuario 
-        if opcion == "1":
-            self.Baculo = 8
-        elif opcion == "2":
-            self.Baculo = 10
-        else:
-            print("Elegiste un numero incorrecto, elige otra vez")
+        opciones = {
+            "1" : (8, "Baculo del árcangel"),
+            "2" : (10, "Báculo del vacío")
+            }
         
+        while True:
+            opcion = input("Elige un arma: (1)Báculo del árcangel (2)Báculo del vacío\n").strip() #Le damos la opcion al usuario 
+            if opcion in opciones:
+                self.Baculo, nombre = opciones[opcion]
+                print(f"Usted escogió: {nombre} ")
+                break
+            else:
+                print("Elegiste un numero incorrecto, elige otra vez")
+                #si el usuario elige cualquier otro numero el programa se seguira ejecutando hasta que elija los numeros que queramos
+            
     def Atributos(self):
         stats = super().Atributos() 
         Nombre_baculo = self.Nombres_baculos.get(self.Baculo, 'Sin arma.')
